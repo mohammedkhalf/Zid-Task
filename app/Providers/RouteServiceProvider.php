@@ -37,11 +37,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
         $this->configureRateLimiting();
-//        $this->routes(function () {
-//            Route::middleware('api')
-//                ->namespace($this->namespace)
-//                ->group(base_path('routes/api-backup.php'));
-//        });
     }
 
     public function map()
