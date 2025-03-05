@@ -60,7 +60,13 @@ or whatever you're most comfortable with.
 
 You can use the attached DB seeder to get data to work with.
 
+#### Running CLI
+
+The attached test suite can be run using `php artisan wishlist:statistics` command or with param `php artisan wishlist:statistics --statistic={key}`
+
+
 #### Running tests
 The attached test suite can be run using `php artisan test` command.
+
 
 [laravel]: https://laravel.com/docs/8.x
