@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// for hint endpoint Url as example : {{base_url}}/api/v1/items
+
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/items', [ItemController::class, 'index']);
     Route::post('/items', [ItemController::class, 'store']);
