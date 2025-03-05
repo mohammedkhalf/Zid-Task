@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Item;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -17,7 +19,7 @@ class ItemCRUDTest extends TestCase
         Item::factory()->zid()->count(4)->create();
         Item::factory()->steam()->count(1)->create();
 
-        $response = $this->getJson('/items');
+        $response = $this->getJson('api/v1/items');
 
         $response->assertStatus(200);
         $response->assertJson(function (AssertableJson $json) {
@@ -45,7 +47,7 @@ class ItemCRUDTest extends TestCase
 
         $item = Item::factory()->create($attributes);
 
-        $response = $this->getJson('/items/' . $item->id);
+        $response = $this->getJson('api/v1/items/' . $item->id);
 
         $response->assertStatus(200);
 
@@ -60,7 +62,7 @@ class ItemCRUDTest extends TestCase
 
     public function test_creating_new_item_with_valid_data(): void
     {
-        $response = $this->postJson('/items', [
+        $response = $this->postJson('api/v1/items', [
             'name' => 'New item',
             'price' => 12345,
             'url' => 'https://store.example.com/my-product',
@@ -79,7 +81,7 @@ class ItemCRUDTest extends TestCase
 
     public function test_creating_new_item_with_invalid_data(): void
     {
-        $response = $this->postJson('/items', [
+        $response = $this->postJson('api/v1/items', [
             'name' => 'New item',
             'price' => 'string',
             'url' => 'invalid url',
@@ -93,7 +95,7 @@ class ItemCRUDTest extends TestCase
     {
         $item = Item::factory()->create();
 
-        $response = $this->putJson('/items/ ' . $item->id, [
+        $response = $this->putJson('api/v1/items/ ' . $item->id, [
             'name' => 'Updated title',
             'price' => $item->price,
             'url' => 'https://store.example.com/my-other-product',
@@ -119,7 +121,7 @@ class ItemCRUDTest extends TestCase
     {
         $item = Item::factory()->create();
 
-        $response = $this->putJson('/items/ ' . $item->id, [
+        $response = $this->putJson('api/v1/items/ ' . $item->id, [
             'name' => 'Updated title',
             'price' => $item->price,
             'url' => 'invalid url',
@@ -127,5 +129,29 @@ class ItemCRUDTest extends TestCase
         ]);
 
         $response->assertStatus(422);
+    }
+    public function test_get_wishlist_statistics(): void
+    {
+        DB::table('items')->insert([
+            ['name' => 'New item 1', 'price' => 100, 'url' => 'example.com','description' => 'Test description 1', 'created_at' => Carbon::now()],
+            ['name' => 'New item 2', 'price' => 200, 'url' => 'example.com','description' => 'Test description 2', 'created_at' => Carbon::now()],
+            ['name' => 'New item 3', 'price' => 300, 'url' => 'example.com','description' => 'Test description 3', 'created_at' => Carbon::now()],
+        ]);
+
+        $response = $this->getJson('/api/v1/wishlist/statistics');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'total_items',
+                'average_price',
+                'website_highest_total_price',
+                'total_price_this_month'
+            ])
+            ->assertJson([
+                'total_items' => 3,
+                'average_price' => 200.0,
+                'website_highest_total_price' => 'example.com',
+                'total_price_this_month' => 600.0,
+            ]);
     }
 }
