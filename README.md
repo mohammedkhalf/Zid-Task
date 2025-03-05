@@ -29,11 +29,30 @@ Please write your answers to following questions.
 
 > **Please briefly explain your implementation of the new feature**  
 >  
-> _..._
+>
+The getWishlistStatistics method calculates and returns key statistics about wishlist items, including solid Principles and repository Design Pattern with following info :
+
+Total items count: The total number of items in the wishlist.
+
+Average price of an item: The average price across all wishlist items.
+
+Website with the highest total price of its items: The website whose items have the highest combined price.
+
+Total price of items added this month: The sum of prices for items added in the current month.
+
+as we interested with these keys features : 
+
+Efficiency: I used Laravel Eloquent ORM and query builder to perform database operations efficiently.
+
+Modularity: The logic is encapsulated in a single method, making it reusable for both API and CLI.
+
+Readability: The code is clean and easy to understand, with clear variable names and comments.
 
 > **For the refactoring, would you change something else if you had more time?**  
 >  
-> _..._
+> 
+
+I think Current refactoring in suitable for current business wise and we can build scalable  and Maintainable features for next phases
 
 ## Running the project
 This project requires a database to run. For the server part, you can use `php artisan serve`
