@@ -19,5 +19,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/items', [ItemController::class, 'store']);
     Route::get('/items/{id}', [ItemController::class, 'show']);
     Route::put('/items/{id}', [ItemController::class, 'update']);
-
+    //statistics
+    Route::get('/wishlist/statistics', [ItemController::class, 'getWishlistStatistics']);
 });

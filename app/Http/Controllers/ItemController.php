@@ -41,4 +41,11 @@ class ItemController extends Controller
         $item = $this->itemService->upddateItem($request,$id);
         return new JsonResponse(['item' => (new ItemSerializer($item))->getData()]);
     }
+
+    //Statistics
+    public function getWishlistStatistics()
+    {
+        $stats =  $this->itemService->calculateWishlistStatistics();
+        return response()->json($stats);
+    }
 }

@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Models\Item;
 use App\Repositories\ItemRepository;
 use App\Serializers\ItemSerializer;
+use Illuminate\Support\Facades\DB;
 use League\CommonMark\CommonMarkConverter;
+use Carbon\Carbon;
 
 class ItemService
 {
@@ -36,5 +38,11 @@ class ItemService
         $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
         $item = ItemRepository::updateItemsQuery($request ,$id,$converter);
         return $item;
+    }
+
+    public function calculateWishlistStatistics()
+    {
+        $stats = ItemRepository::WishlistStatisticsQuery();
+        return $stats;
     }
 }
